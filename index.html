@@ -389,10 +389,14 @@
     .countdown-units{display:flex;align-items:center;gap:0.65rem}
     .countdown-unit{display:flex;align-items:baseline;gap:0.18rem;white-space:nowrap}
     .countdown-unit strong{
+      display:inline-block;
+      min-width:2ch;
+      text-align:right;
       font-family:var(--serif);
       font-size:1.15rem;
       line-height:1;
       font-variant-numeric:tabular-nums;
+      font-feature-settings:"tnum" 1;
     }
     .countdown-unit span{font-size:0.58rem;color:rgba(255,255,255,0.78)}
     .countdown-message{
@@ -555,16 +559,16 @@
     <div class="stat-label">Days</div>
   </div>
   <div class="stat">
-    <div class="stat-num">4</div>
-    <div class="stat-label">Nights</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">25+</div>
+    <div class="stat-num">20</div>
     <div class="stat-label">Spots</div>
   </div>
   <div class="stat">
-    <div class="stat-num">6</div>
+    <div class="stat-num">8</div>
     <div class="stat-label">Barrios</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">7,350 ft</div>
+    <div class="stat-label">Elevation</div>
   </div>
 </div>
 
