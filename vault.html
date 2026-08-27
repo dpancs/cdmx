@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#BF4E30">
+  <link rel="icon" href="data:,">
+  <title>CDMX Vault</title>
+  <meta name="description" content="A curated vault of bars, rooftops, restaurants, tacos, dancing, and cafés for a Mexico City trip.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --terracotta: #BF4E30;
+      --coral: #D96B52;
+      --navy: #1B3A5C;
+      --gold: #B48A2C;
+      --warm-gold: #D3A64A;
+      --teal: #2A7B7B;
+      --magenta: #8B2252;
+      --warm-brown: #7A6332;
+      --burnt-orange: #C46A2E;
+      --text: #1A1A1A;
+      --text-mid: #4A4A4A;
+      --text-light: #6E6E6E;
+      --border: #E0DBD5;
+      --bg-warm: #F7F4F1;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Inter', system-ui, sans-serif;
+      --page-pad: 1.25rem;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 9.5rem; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg-warm);
+      font-family: var(--sans);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select { font: inherit; }
+    a { color: inherit; }
+    img { display: block; width: 100%; height: auto; }
+    .hero {
+      position: relative;
+      min-height: 500px;
+      height: 58svh;
+      max-height: 580px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      color: white;
+      background: #25323d;
+      isolation: isolate;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(180deg, rgba(10,17,24,.32) 0%, rgba(10,17,24,.2) 32%, rgba(10,17,24,.88) 100%);
+    }
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 48%;
+    }
+    .hero-inner { width: 100%; max-width: 1180px; margin: 0 auto; padding: calc(1rem + env(safe-area-inset-top)) var(--page-pad) 2.4rem; text-shadow: 0 2px 20px rgba(0,0,0,.28); }
+    .back-link {
+      position: absolute;
+      top: calc(1rem + env(safe-area-inset-top));
+      left: var(--page-pad);
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      color: rgba(255,255,255,.92);
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 600;
+      padding: .45rem .65rem;
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 999px;
+      background: rgba(82,28,13,.16);
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .back-link:hover, .back-link:focus-visible { background: rgba(82,28,13,.3); border-color: rgba(255,255,255,.65); outline: none; }
+    .hero-kicker { margin: 0 0 .55rem; font-size: .74rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.72); }
+    .hero h1 { margin: 0; font-family: var(--serif); font-size: clamp(3rem, 16vw, 4.25rem); line-height: .93; letter-spacing: -.04em; }
+    .hero-subtitle { max-width: 610px; margin: .9rem 0 0; font-family: var(--serif); font-size: clamp(1.05rem, 3.5vw, 1.45rem); color: rgba(255,255,255,.9); }
+    .toolbar {
+      position: relative;
+      top: 0;
+      z-index: 30;
+      background: rgba(247,244,241,.96);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 6px 16px rgba(47,32,24,.05);
+    }
+    .toolbar-inner { max-width: 1180px; margin: 0 auto; padding: .82rem var(--page-pad) .9rem; }
+    .search-wrap { position: relative; }
+    .search-icon { position: absolute; left: .8rem; top: 50%; transform: translateY(-50%); color: var(--text-light); pointer-events: none; }
+    .search {
+      width: 100%;
+      height: 44px;
+      padding: 0 2.4rem 0 2.3rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      background: white;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .search:focus { border-color: rgba(191,78,48,.7); box-shadow: 0 0 0 3px rgba(191,78,48,.1); }
+    .search::-webkit-search-cancel-button { display: none; }
+    .clear-search { position: absolute; right: .45rem; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: var(--text-light); font-size: 1.2rem; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: none; }
+    .clear-search:hover, .clear-search:focus-visible { background: var(--bg-warm); outline: none; }
+    .filter-groups { min-width: 0; }
+    .filter-row { display: flex; flex-wrap: wrap; gap: .42rem; margin-top: .7rem; }
+    .neighborhood-filter { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: .55rem; margin-top: .7rem; }
+    .neighborhood-filter label { color: var(--text-light); font-size: .67rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .neighborhood-select {
+      width: 100%;
+      height: 38px;
+      padding: 0 2rem 0 .72rem;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: var(--text-mid);
+      background: white;
+      font-size: .73rem;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+    .neighborhood-select:focus { border-color: rgba(191,78,48,.7); box-shadow: 0 0 0 3px rgba(191,78,48,.1); }
+    .filter-pill {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: white;
+      color: var(--text-mid);
+      padding: .38rem .62rem;
+      font-size: .68rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: color .2s ease, background .2s ease, border-color .2s ease;
+    }
+    .filter-pill:hover, .filter-pill:focus-visible { border-color: var(--terracotta); color: var(--terracotta); outline: none; }
+    .filter-pill[aria-pressed="true"] { color: white; border-color: var(--terracotta); background: var(--terracotta); }
+    .result-line { display: flex; justify-content: space-between; gap: 1rem; max-width: 1180px; margin: 0 auto; padding: .82rem var(--page-pad) 0; color: var(--text-light); font-size: .72rem; }
+    .result-line strong { color: var(--text); }
+    main { max-width: 1180px; margin: 0 auto; }
+    .category { padding: 2.4rem var(--page-pad) 2.8rem; border-bottom: 1px solid var(--border); }
+    .category[hidden] { display: none; }
+    .section-head { display: grid; grid-template-columns: auto 1fr; gap: .85rem; align-items: start; margin-bottom: 1.25rem; }
+    .section-emoji { font-size: 1.55rem; line-height: 1; padding-top: .18rem; }
+    .section-title-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: .55rem; }
+    .section-head h2 { margin: 0; font-family: var(--serif); font-size: clamp(1.55rem, 5vw, 2.25rem); line-height: 1.12; letter-spacing: -.02em; }
+    .section-count { color: var(--terracotta); font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .section-head p { grid-column: 2; margin: .35rem 0 0; color: var(--text-mid); font-size: .86rem; max-width: 670px; }
+    .venue-grid { display: grid; grid-template-columns: 1fr; gap: .75rem; }
+    .venue-card {
+      min-width: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 4px 14px rgba(42,28,20,.035);
+    }
+    .venue-card.is-hidden { display: none; }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; }
+    .venue-name { margin: 0; font-family: var(--serif); font-size: 1.2rem; line-height: 1.2; }
+    .venue-link { text-decoration-line: underline; text-decoration-color: rgba(191,78,48,.4); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    .venue-link:hover, .venue-link:focus-visible { color: var(--terracotta); text-decoration-color: var(--terracotta); outline: none; }
+    .map-arrow { flex: 0 0 auto; color: var(--terracotta); border: 1px solid rgba(191,78,48,.24); border-radius: 50%; width: 30px; height: 30px; display: grid; place-items: center; text-decoration: none; font-size: .8rem; }
+    .map-arrow:hover, .map-arrow:focus-visible { color: white; background: var(--terracotta); outline: none; }
+    .tags { display: flex; flex-wrap: wrap; gap: .32rem; margin-top: .55rem; }
+    .tag { display: inline-block; font-family: var(--sans); font-size: .58rem; font-weight: 700; letter-spacing: .055em; text-transform: uppercase; padding: .17rem .43rem; border-radius: 3px; }
+    .tag-bar { background: #FBF2DC; color: var(--gold); }
+    .tag-rooftop { background: #E4F0F0; color: var(--teal); }
+    .tag-restaurant { background: #FAEAE4; color: var(--terracotta); }
+    .tag-activity { background: #F3E4EC; color: var(--magenta); }
+    .tag-bakery { background: #F2EDD8; color: var(--warm-brown); }
+    .tag-tacos { background: #FAECD9; color: var(--burnt-orange); }
+    .tag-hood { background: #F0EDEA; color: var(--text-light); }
+    .status { display: inline-flex; align-items: center; gap: .23rem; font-size: .58rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: .17rem .43rem; border-radius: 3px; }
+    .status-planned { color: #2E6642; background: #E7F2EA; }
+    .status-must { color: #7A5B10; background: #FFF1C9; }
+    .status-watch { color: #8A3526; background: #FBE8E2; }
+    .venue-desc { margin: .75rem 0 .85rem; color: var(--text-mid); font-size: .84rem; line-height: 1.52; }
+    .fact-list { display: grid; gap: .42rem; margin: 0; padding: 0; list-style: none; }
+    .fact { display: grid; grid-template-columns: 1.25rem 1fr; gap: .36rem; align-items: start; color: var(--text-mid); font-size: .75rem; line-height: 1.45; }
+    .fact-icon { line-height: 1.35; text-align: center; }
+    .reservation { margin: .75rem 0 0; padding: .62rem .72rem; color: #7A2A18; background: #FFF0E9; border: 1px solid rgba(217,107,82,.78); border-radius: 6px; box-shadow: 0 0 0 2px rgba(211,166,74,.12), 0 2px 8px rgba(191,78,48,.12); font-size: .75rem; font-weight: 700; }
+    .saved-notes { margin-top: 1rem; padding: 1rem; background: #fff; border: 1px solid var(--border); border-radius: 10px; }
+    .saved-notes h3 { margin: 0; font-family: var(--serif); font-size: 1.15rem; }
+    .saved-notes p { margin: .3rem 0 .8rem; color: var(--text-mid); font-size: .8rem; }
+    .note-images { display: grid; grid-template-columns: 1fr; gap: .65rem; }
+    .note-images figure { margin: 0; }
+    .note-images img { border: 1px solid var(--border); border-radius: 7px; }
+    .note-images figcaption { margin-top: .35rem; color: var(--text-light); font-size: .67rem; }
+    .lead-note { margin-top: .75rem; padding: .7rem .8rem; background: var(--bg-warm); border-left: 3px solid var(--terracotta); border-radius: 0 4px 4px 0; color: var(--text-mid); font-size: .78rem; }
+    .empty-state { display: none; max-width: 640px; margin: 2rem auto 4rem; padding: 2rem var(--page-pad); text-align: center; }
+    .empty-state h2 { margin: 0; font-family: var(--serif); font-size: 1.6rem; }
+    .empty-state p { color: var(--text-mid); }
+    .empty-state button { border: 1px solid var(--terracotta); border-radius: 999px; padding: .55rem .9rem; color: white; background: var(--terracotta); cursor: pointer; }
+    footer { padding: 2.5rem var(--page-pad) calc(2.5rem + env(safe-area-inset-bottom)); text-align: center; color: var(--text-light); font-size: .72rem; }
+    footer a { color: var(--terracotta); text-underline-offset: 3px; }
+    .reveal { opacity: 1; transform: translateY(6px); transition: transform .45s ease, box-shadow .45s ease; }
+    .reveal.is-visible { transform: none; }
+    @media (min-width: 390px) { :root { --page-pad: 1.4rem; } .filter-pill { font-size: .7rem; padding-inline: .68rem; } }
+    @media (min-width: 420px) { .hero-inner { padding-bottom: 2.7rem; } .venue-card { padding: 1.1rem; } }
+    @media (min-width: 640px) {
+      :root { --page-pad: 2.5rem; }
+      .hero { min-height: 50vh; height: 50vh; max-height: 560px; }
+      .hero h1 { font-size: clamp(4.4rem, 8vw, 6.4rem); }
+      .toolbar { position: sticky; }
+      .toolbar-inner { display: grid; grid-template-columns: minmax(220px, 320px) 1fr; gap: 1rem; align-items: start; }
+      .search-wrap { margin-top: .05rem; }
+      .filter-row { margin-top: 0; justify-content: flex-end; }
+      .neighborhood-filter { grid-template-columns: auto minmax(180px, 260px); justify-content: end; }
+      .venue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem; align-items: start; }
+      .section-head { margin-bottom: 1.55rem; }
+      .note-images { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 900px) {
+      :root { --page-pad: 4rem; }
+      .hero-inner { padding-bottom: 3.6rem; }
+      .category { padding-top: 3.4rem; padding-bottom: 3.8rem; }
+      .venue-grid { gap: 1rem; }
+      .venue-card { padding: 1.2rem 1.25rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+    @media print {
+      .hero { min-height: 330px; }
+      .toolbar { position: static; }
+      .search-wrap { display: none; }
+      .filter-groups { display: none; }
+      .venue-card { break-inside: avoid; box-shadow: none; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <img class="hero-image" src="img/v-img01.jpg" alt="Palacio de Bellas Artes beneath a dramatic blue sky in Mexico City" data-source="https://images.pexels.com/photos/30276059/pexels-photo-30276059.png?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" data-license="https://www.pexels.com/license/">
+    <a class="back-link" href="https://sharnildalal.github.io/cdmx/" aria-label="Back to the Mexico City itinerary">← Back to Itinerary</a>
+    <div class="hero-inner">
+      <p class="hero-kicker">The full shortlist</p>
+      <h1>CDMX Vault</h1>
+      <p class="hero-subtitle">Every spot we're eyeing, organized and ready to go.</p>
+    </div>
+  </header>
+
+  <nav class="toolbar" aria-label="Filter venues">
+    <div class="toolbar-inner">
+      <div class="search-wrap">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input class="search" id="venue-search" type="search" aria-label="Find a spot" placeholder="Find a spot, neighborhood, or vibe" autocomplete="off">
+        <button class="clear-search" type="button" aria-label="Clear search">×</button>
+      </div>
+      <div class="filter-groups">
+        <div class="filter-row" id="filters" aria-label="Category filters"></div>
+        <div class="neighborhood-filter">
+          <label for="neighborhood-select">Neighborhood</label>
+          <select class="neighborhood-select" id="neighborhood-select" aria-label="Filter by neighborhood">
+            <option value="all">All neighborhoods</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="result-line" aria-live="polite">
+    <span><strong id="result-count">41</strong> places ready</span>
+    <span id="active-label">All categories</span>
+  </div>
+
+  <main id="vault"></main>
+  <section class="empty-state" id="empty-state" aria-live="polite">
+    <h2>No spot found</h2>
+    <p>Try another name, neighborhood, or category.</p>
+    <button type="button" id="reset-search">Show everything</button>
+  </section>
+
+  <footer>
+    <a href="https://sharnildalal.github.io/cdmx/">Return to the day-by-day itinerary</a>
+  </footer>
+
+  <script>
+    const categories = [
+      { id: 'cocktails', label: 'Cocktails', title: 'Cocktail Bars & Speakeasies', emoji: '🍸', tag: 'Bar', tagClass: 'tag-bar', blurb: 'From award-winning laboratories to tiny mezcal dens. Reservations matter at the smallest rooms.' },
+      { id: 'rooftops', label: 'Rooftops', title: 'Rooftops', emoji: '🌅', tag: 'Rooftop', tagClass: 'tag-rooftop', blurb: 'Sunset views, skyline tables, and daytime terraces across Reforma, Roma, Condesa, and Centro.' },
+      { id: 'dining', label: 'Dining', title: 'Dining', emoji: '🍽️', tag: 'Restaurant', tagClass: 'tag-restaurant', blurb: 'Destination tasting menus, celebrated seafood, and relaxed meals built around corn and place.' },
+      { id: 'tacos', label: 'Tacos', title: 'Tacos', emoji: '🌮', tag: 'Tacos', tagClass: 'tag-tacos', blurb: 'Late-night al pastor, guisados, grill smoke, and a strong plant-based bench.' },
+      { id: 'dancing', label: 'Dancing', title: 'Clubs & Dancing', emoji: '🕺', tag: 'Dancing', tagClass: 'tag-activity', blurb: 'Dinner that turns into a party, retro dance battles, and late-night electronic rooms.' },
+      { id: 'cafes', label: 'Cafés', title: 'Bakeries & Cafés', emoji: '🥐', tag: 'Bakery', tagClass: 'tag-bakery', blurb: 'One essential bakery, with a second branch if the Colima line is too long.' }
+    ];
+
+    const venues = [
+      {c:'cocktails',n:'Handshake Speakeasy',h:'Juárez / Zona Rosa',a:'Amberes 65',s:['planned','must'],d:'Upscale two-level experimental cocktail bar with 1920s styling and avant-garde drinks.',f:[['💰','MXN 310 to 500 per cocktail.'],['📞','Reserve early. 90-minute slots, card guarantee, MXN 250 per-person no-show fee, and a 15-minute grace period. Groups of 6+ book by email.'],['⏰','Mon to Thu and Sun 6 PM to 1 AM, Fri to Sat 6 PM to 2 AM. Sunday close may be midnight, so confirm.'],['🏆','World’s 50 Best recognition is widely cited, but the current position was not confirmed.']]},
+      {c:'cocktails',n:'Hanky Panky',h:'Juárez',a:'Turín 52',s:['planned'],d:'Hidden members-club-style cocktail bar with theatrical entrance and exit rituals.',f:[['💰','Expensive.'],['📞','Reservations are effectively required days ahead.'],['⏰','Tue to Sat 5 PM to 2 AM, Sun 5 PM to midnight, closed Monday.'],['🏆','A No. 13 World’s 50 Best Bars ranking is cited, but the ranking year was not confirmed.'],['⚠️','The full reveal is part of the experience. Service has a mixed reputation.']]},
+      {c:'cocktails',n:'Licorería Limantour',h:'Roma Norte',a:'Álvaro Obregón 106',s:['planned','must'],d:'Cosmopolitan cocktail institution with creative seasonal menus and a lively two-floor social atmosphere.',f:[['💰','MXN 310 to 500.'],['📞','Reservations available through OpenTable.'],['⏰','Mon to Wed 6 PM to midnight, Thu 6 PM to 2 AM, Fri to Sat 3 PM to 2 AM, Sun 3 PM to midnight.'],['🏆','Longtime World’s 50 Best Bars presence. A No. 11 ranking is cited, but it is not current.']]},
+      {c:'cocktails',n:'Tlecān',h:'Roma Norte',a:'Avenida Álvaro Obregón 228 Local 2',s:['must'],d:'Immersive pre-Hispanic mezcal bar with incense, earthen design, rare agave spirits, and Mexican heritage ingredients.',f:[['💰','Cocktails MXN 190 to 210.'],['🏆','No. 23 World’s 50 Best Bars 2025. No. 5 North America’s 50 Best Bars 2026.'],['⏳','Mostly standing room. No reservations, so go early or expect a queue.']]},
+      {c:'cocktails',n:'Café de Nadie',h:'Roma Norte',a:'Chihuahua 135',s:['planned'],d:'Vinyl listening bar with 1,500+ records, retro red lighting, and cocktails that reward patience.',f:[['💰','Cocktails around US$11.'],['🏆','No. 47 North America’s 50 Best Bars 2025, No. 17 in 2024.'],['⏳','Small and fills fast. Arrive early on weekends.'],['⏰','Mon 4 to 11 PM, Wed 6 PM to 2 AM, Thu to Fri 2 PM to 2 AM, Sat noon to 2 AM, Sun noon to 11 PM, closed Tuesday.']]},
+      {c:'cocktails',n:'Bar Mauro',h:'Roma Norte',a:'Tabasco 149',s:['planned','must'],d:'Stylish 1970s Milan-inspired aperitivo bar with vermouth, amari, and a legendary cheeseburger.',r:'Reserved Sunday, September 6 at 6:00 PM',f:[['💰','Average cocktail around US$11.'],['🏆','No. 54 World’s 50 Best Bars 2025, No. 2 North America’s 50 Best Bars 2026, Campari One To Watch 2025.'],['📞','Very small. Reservations are essential.'],['⏰','Open Tue to Sun. Exact daily hours were not confirmed.']]},
+      {c:'cocktails',n:'Form + Matter (FO+MA)',h:'Roma Norte',a:'San Luis Potosí 37, entrance on Mérida',s:['must'],d:'Sleek cocktail flavor laboratory blending science and unusual ingredients into sensory experiences.',f:[['💰','MXN 500+.'],['📞','Reservations recommended. 90-minute slots and 15-minute grace period. Groups of 6+ should contact the venue.'],['⏰','Mon, Tue, Thu, and Sun 6 PM to 1 AM, Fri to Sat 6 PM to 1:30 AM, closed Wednesday.']]},
+      {c:'cocktails',n:'La Clandestina',h:'Condesa edge',a:'Avenida Álvaro Obregón 298, near Nuevo León',s:[],d:'Intimate candlelit mezcalería with roughly 50 to 60 mezcals and smoky tasting flights.',f:[['💰','Moderate pricing. Limited food menu.'],['⏰','Mon to Wed 6:30 PM to 1 AM, Thu to Sat 6:30 PM to 2 AM. Sunday hours were not confirmed.']]},
+      {c:'cocktails',n:'Bijou Drinkery Room',h:'Hipódromo / Condesa',a:'Avenida Sonora 189-B',s:['must'],d:'Hidden speakeasy inside L’oie Foodie Rooftop with a secret entrance and Rubik’s Cube-style customizable cocktail menu.',f:[['💰','MXN 500+. Average cocktail around US$13.'],['🏆','No. 34 North America’s 50 Best Bars 2025.'],['📞','Reservations recommended. Smart casual.'],['⏰','Tue to Sat 7 PM to 2 AM.']]},
+      {c:'cocktails',n:'Pinche Bar',h:'Anáhuac I Sección',a:'Lago Iseo 296',s:[],d:'Industrial bar in a refurbished 1940s warehouse with a terrace, craft beer, live music, and comedy nights.',f:[['📍','Associated with Pinche Gringo BBQ. This is northwest of the central Roma and Condesa core.'],['⏰','Mon and Wed 5 PM to midnight, Fri to Sat 5 PM to 2 AM. The published schedule is incomplete, so confirm before going.']]},
+      {c:'cocktails',n:'Casa Franca',h:'Roma Norte',a:'Mérida 109',s:['planned'],d:'Intimate apartment-style jazz club and cocktail bar spread across cozy rooms with live ensembles nightly.',f:[['💰','Cover around MXN 150 has been reported. Tapas and pizza available.'],['📞','Small and quick to fill. Reserve at least a day ahead.'],['⏰','Tue 6 PM to 1:30 AM, Wed 5 PM to 1 AM, Thu to Sat 5 PM to 2 AM.'],['⚠️','Recent reviews suggest food may be required when ordering alcohol. Verify directly.']]},
+
+      {c:'rooftops',n:'Cityzen Rooftop Bar',h:'Reforma / Cuauhtémoc',a:'Paseo de la Reforma 297, 38th floor, Sofitel Reforma',s:['planned'],d:'High-end rooftop with panoramic Ángel de la Independencia and Reforma corridor views.',f:[['💰','Expensive. Cocktails, food, breakfast, and brunch.'],['📞','Reservations advisable.'],['⏰','Sun to Wed 8 AM to 1 AM, Thu to Sat 8 AM to 2 AM.']]},
+      {c:'rooftops',n:'Supra Roma',h:'Roma Norte',a:'Álvaro Obregón 151, floor P14',s:['planned'],d:'Panoramic rooftop restaurant and bar where art, food, good music, sunset views, and a lively late-night scene meet.',f:[['💰','Moderate to expensive.'],['📞','Reservations advisable.'],['⏰','Approximate: Sun 11 AM to midnight, Mon to Tue 1 PM to midnight, Wed to Fri 1 PM to 1 AM, Sat 11 AM to 1 AM. Some sources show later closes.']]},
+      {c:'rooftops',n:'Palmares Azotea',h:'Roma Norte',a:'Durango 216',s:['planned'],d:'Green, bohemian-chic rooftop with Mediterranean seafood-focused sharing plates and Fuente de Cibeles views.',f:[['💰','Moderate to expensive.'],['📞','Reservations recommended.'],['⏰','Sun 1 to 6 PM, Mon to Wed 1 to 10 PM, Thu to Sat 1 PM to midnight.']]},
+      {c:'rooftops',n:'Toledo Rooftop',h:'Juárez / Roma edge',a:'Avenida Chapultepec 461',s:['planned','must'],d:'Stylish cocktail lounge and restaurant with broad city views, creative food, and upscale evening energy.',f:[['💰','Expensive.'],['📞','Reserve to avoid queues.'],['⏰','Sun noon to midnight, Mon to Tue 1 PM to midnight, Wed to Sat 1 PM to 2 AM.']]},
+      {c:'rooftops',n:'Balmori Roofbar',h:'Roma Norte',a:'Zacatecas 139',s:['must'],d:'Large plant-filled rooftop with cocktails, grilled international food, and a youthful social vibe.',f:[['💰','Expensive.'],['⏰','Tue to Sat 1 PM to 2 AM, Sun 1 to 9 PM, closed Monday.']]},
+      {c:'rooftops',n:'SkyBar Condesa',h:'Condesa',a:'Aguascalientes 156, Mondrian',s:['watch'],d:'Green rooftop with DJ music, cocktails, light food, and city views.',f:[['💰','Reviews describe it as slightly overpriced.'],['📞','Reservations for groups of 6+.'],['⚠️','Operating status is uncertain. One search result marked it permanently closed despite 2026 review pages. Verify before visiting.']]},
+      {c:'rooftops',n:'Condesa DF Rooftop',h:'Condesa',a:'Avenida Veracruz 102',s:[],d:'Peaceful design-forward rooftop sushi bar in a 1928 French-neoclassical hotel with greenery and Parque España views.',f:[['💰','Expensive.'],['📞','Reservations advisable.'],['⏰','Exact current hours were not confirmed.']]},
+      {c:'rooftops',n:'Ling Ling by Hakkasan',h:'Reforma',a:'Paseo de la Reforma 509, 56th floor, Ritz-Carlton',s:[],d:'Dramatic panoramic restaurant and bar with Japanese, Cantonese, and Thai-influenced sharing plates at CDMX’s highest vantage point.',f:[['💰','Expensive. Displayed menu prices may have 16% tax added.'],['📞','Popular, so reserve early.'],['⏰','Exact current hours were not confirmed.']]},
+      {c:'rooftops',n:'El Mayor',h:'Centro Histórico',a:'República de Argentina 15, Librería Porrúa rooftop',s:[],d:'Contemporary Mexican terrace overlooking Templo Mayor and the Cathedral, ideal for a daytime cocktail or meal with history.',f:[['💰','Moderate to expensive. Vegetarian, vegan, and gluten-free options.'],['📞','Reservations accepted.'],['⏰','Daily 9 AM to noon and 1 to 6:30 PM.']]},
+      {c:'rooftops',n:'Terraza Catedral',h:'Centro Histórico',a:'Near the Metropolitan Cathedral',s:[],d:'Relaxed rooftop with Cathedral and historic-center views, cocktails, food, and sunset appeal.',f:[['💰','MXN 100 cover only Fri to Sat when DJs play, otherwise free, based on a January 2025 venue response.'],['⏰','Exact address and current hours were not reliably confirmed.']]},
+
+      {c:'dining',n:'Pujol',h:'Polanco',a:'Tennyson 133',s:['planned'],d:'Enrique Olvera’s landmark modern Mexican restaurant, known for mole madre and taco omakase. Two Michelin stars.',r:'Reserved Monday, September 7 from 7:30 to 9:00 PM',f:[['💰','Five-course restaurant menu MXN 3,595. Omakase MXN 3,995. Drinks excluded.'],['📞','Reservation required. 15-minute grace period and US$100 per-person no-show penalty. Confirm one day ahead.'],['⏳','Typical lead time: 2 months for the restaurant, 3 months for omakase.'],['👔','Casual formal dress.']]},
+      {c:'dining',n:'Expendio de Maíz Sin Nombre',h:'Roma Norte',a:'Avenida Yucatán 84',s:['planned'],d:'No-menu, corn-centered chef-led progression at communal sidewalk tables. Pure, elemental Mexican cooking.',f:[['💵','Cash only. No reservations, first come first served.'],['⏳','Wait can be 30 minutes to 2 hours.'],['🥬','Strong vegetarian and dietary accommodation. Tell the team what you can eat and they cook for you.'],['⏰','Tue to Thu 9 AM to 7 PM, Fri to Sat 9 AM to 8:30 PM, Sun 9 AM to 6 PM, closed Monday.']]},
+      {c:'dining',n:'Quintonil',h:'Polanco',a:'Isaac Newton 55',s:[],d:'Jorge Vallejo’s intimate contemporary Mexican tasting restaurant centered on native and overlooked ingredients.',f:[['💰','Expensive. Roughly 11 courses over 2+ hours.'],['📞','Reservations required.'],['🏆','A No. 9 worldwide ranking is cited, but the ranking year was not confirmed.'],['👔','No mandatory dress code reported.']]},
+      {c:'dining',n:'Contramar',h:'Roma Norte',a:'Durango 200',s:[],d:'Buzzy seafood institution known for tuna tostadas, whole grilled fish, and strawberry meringue.',f:[['💰','MXN 500+. Cards accepted.'],['📞','Highly booked, reserve ahead.'],['👔','Business casual.'],['⏰','Mon to Fri noon to 8 PM, Sat to Sun 11 AM to 8 PM.']]},
+      {c:'dining',n:'Masala y Maíz',h:'Juárez',a:'Juárez, Ciudad de México',s:['watch'],d:'South Asian, East African, and Mexican “mestizaje rebelde” cooking with communal seating and strong vegan options. One Michelin star.',f:[['💰','MXN 500+. Smart casual.'],['⏰','Lunch only: Mon and Wed to Sun noon to 6 PM, closed Tuesday.'],['📞','Not bookable through OpenTable.'],['⚠️','Address conflict: Marsella 72 versus Artículo 123 #116 C. Verify the current address before visiting.']]},
+      {c:'dining',n:'Azul Histórico',h:'Centro Histórico',a:'Isabel la Católica 30',s:[],d:'Regional Mexican cooking in a dramatic tree-filled historic courtyard, especially atmospheric at night.',f:[['💰','Moderately expensive to expensive.'],['📞','Reservations recommended. Walk-ins may wait.'],['⏰','Daily 9 AM to noon and 1 to 11 PM.']]},
+
+      {c:'tacos',n:'Los Parados',h:'Roma Sur',a:'Monterrey 333, corner of Baja California / Eje 3 Sur',s:['planned'],d:'Standing-room-only taquería famous for chile poblano con queso, machitos, and late-night carbon-grilled meats.',f:[['💰','Cheap, roughly US$2 to US$10 per person.'],['🌮','Order chile poblano con queso, machitos de carnero, then arroz con leche. Multiple salsas at the condiment station.'],['🏆','The Infatuation calls it one of CDMX’s best taco spots.'],['⏰','Monterrey location: Sun to Thu 12:30 PM to 2:30 AM, Fri to Sat 12:30 PM to 4:30 AM. A second location is at Av. Universidad 540.']]},
+      {c:'tacos',n:'El Vilsito',h:'Narvarte Oriente',a:'Petén 248',s:[],d:'Mechanic shop by day, roaring al pastor taquería by night.',f:[['💰','Cheap, fast, and lively. Cards and cash accepted.'],['🌮','Order the gringa de pastor and avocado salsa.'],['🏆','Michelin Bib Gourmand and Tripadvisor Travellers’ Choice Best of the Best 2025.'],['⏰','Older sources show closes around 3 AM weekdays and 5 AM Fri to Sat. Confirm current hours. Roughly a 15-minute Uber from Roma.']]},
+      {c:'tacos',n:'Los Callejeros',h:'Centro Histórico',a:'Av. 5 de Mayo 10-D, next to Palacio de Bellas Artes',s:[],d:'Colorful tacos de guisado spot with rotating daily stews, fresh fruit aguas, and vegetarian options.',f:[['💰','Budget-friendly. Quick daytime option in Centro.'],['🌮','Try the rotating home-style fillings, including pollo con mole.'],['🏆','4.9 on Facebook from 64 reviews and 4.4 in aggregated reviews.'],['⏰','Hours conflict by source. One says daily noon to 8 PM; another says closed Monday with varied daytime hours Tue to Sun. Verify before visiting.']]},
+      {c:'tacos',n:'Taquería El Califa',h:'Juárez / Reforma',a:'Paseo de la Reforma 382',s:[],d:'Multi-location late-night taquería chain with quality meats, arrachera, rib eye, and vegan options.',f:[['💰','MXN 200 to 400. Cards accepted. Sit-down dining.'],['⏰','Open late. One source shows noon to 4:30 AM.'],['⚠️','This is the El Califa chain, not El Califa de León at Ribera de San Cosme 56. El Califa de León lost its Michelin star in May 2026.']]},
+      {c:'tacos',n:'Por Siempre Vegana Taquería',h:'Roma Sur / Roma Norte',a:'Manzanillo and Chiapas, Roma Sur',s:[],d:'Energetic street stall with cult-following vegan al pastor off a trompo, suadero, and chorizo tacos.',f:[['💰','About MXN 30 per taco. Free self-service condiment and salsa bar.'],['🏆','Tripadvisor Travellers’ Choice, with 102 reviews and a reported rank of No. 409 among 9,475 restaurants.'],['⏰','Sources differ: daily 2 PM to midnight, or Mon to Sat 1 to 11 PM.'],['⚠️','Original corner is Manzanillo and Chiapas. A move to Coahuila 169, Roma Norte is also reported, so verify.']]},
+      {c:'tacos',n:'Gracias Madre Taquería Vegana',h:'Roma Norte',a:'Tabasco 97-B',s:[],d:'Casual vegan taquería with punk-rock Chilango energy, cocktails, mushroom birria, and suadero tacos.',f:[['💰','Inexpensive. Five baby tacos for MXN 95. Individual tacos around MXN 32.'],['🌮','Try mushroom birria or suadero on corn tortillas.'],['⏰','Mon to Sat 9 AM to 10:45 PM, Sun 9 AM to 3 PM and 7 PM to 10:20 PM.']]},
+      {c:'tacos',n:'Taco Santo Vegano',h:'Roma Norte',a:'Chihuahua 142-Loc D',s:[],d:'Whole-food vegan taquería with green chickpea chorizo and creative fillings, without fake meat.',f:[['💰','Moderate. Green chickpea chorizo taco around MXN 35.'],['🌮','Try watermelon “tuna” tostada, jackfruit pibil, or mushroom pastor. Hand-pressed corn tortillas.'],['📍','Tiny spot with 6 bistro tables and about 12 seats.'],['⏰','Sun to Thu 1 to 10 PM, Fri to Sat 1 to 11 PM. 4.7 rating from 306+ aggregated reviews.']]},
+      {c:'tacos',n:'La Pitahaya Vegana',h:'Roma Norte',a:'Querétaro 90',s:[],d:'Aesthetic-forward vegan taquería famous for pink beet-corn tortillas and inventive plant-based fillings.',f:[['💰','A little above budget. Pastor machaca with guacamole starts around MXN 50+.'],['🌮','Try cauliflower al pastor, oyster mushroom pastor, and pink tortillas made with beet, chia, and amaranth.'],['📍','Small room with about 12 indoor seats and 2 outdoor tables.'],['🏆','4.7 rating from 2,351+ aggregated reviews.']]},
+      {c:'tacos',n:'Vege Taco',h:'Coyoacán',a:'Carrillo Puerto 65 / Miguel Ángel de Quevedo 1152',s:['watch'],d:'Traditional, unpretentious family-run vegan taquería with soy pibil, flautas, and a full comida corrida.',f:[['💰','Very cheap, about MXN 25 per taco. Menú del día around MXN 45 with soup, salad, agua, and 3 tacos.'],['🌮','Try soy pibil or chorizo on corn tortillas.'],['📍','Near the Frida Kahlo Museum. Best paired with a Coyoacán day.'],['⚠️','Coyoacán is 30 to 45 minutes from Roma by Uber. Foreign cards may fail, so bring cash. 4.6 aggregated rating.']]},
+
+      {c:'dancing',n:'Patrick Miller',h:'Roma Norte',a:'Mérida 17',s:['planned'],d:'Legendary retro dance club with 80s and 90s synth-pop, Italo disco, and freestyle dance battle circles at midnight.',f:[['💵','Cash only. Cover around MXN 100, beer around MXN 50.'],['⏰','Friday only, roughly 9 PM to 2:30 or 3 AM. September 4 is the one trip night that works.'],['⚠️','Extremely crowded after midnight. No seating, so prepare to dance all night.'],['🤝','All ages and notably inclusive. 4.3 rating from 3,709 reviews.']]},
+      {c:'dancing',n:'Parole Polanco',h:'Polanco',a:'Av. Emilio Castelar 163, in front of Lincoln Park',s:['planned'],d:'Upscale Italian dinner club where a live tenor, violinist, and DJ turn dinner into a full dance party nightly.',f:[['💰','MXN 500+. Cards accepted. Italian cuisine and seafood.'],['📞','Reserve through OpenTable. Sunday may work without a reservation, but check ahead. Valet parking.'],['🕙','The party is typically in full swing around 10 PM.'],['👔','Casual elegant or smart casual.'],['⏰','Daily noon to 6 PM for lunch, 6 PM to 2 AM for dinner and party.'],['🥂','Romantic champagne experience costs MXN 3,670 with Moët & Chandon, petals, and candles. Food is separate. 4.9 Tripadvisor rating from 5,879 reviews.']]},
+      {c:'dancing',n:'LooLoo Studio',h:'Juárez / Zona Rosa',a:'Londres 195',s:[],d:'Immersive electronic nightclub with cutting-edge sound, deep house and techno DJs, and a strict door policy.',f:[['💰','Expensive. Table reservations available.'],['⏰','Thu to Sat 10 PM to 5 AM only.'],['🎧','Past guests include Elderbrook, Jørd, Foster the People DJ set, Dua Lipa, Deep Dish, and Aly & Fila.'],['⚠️','Strict door policy. Reviews split between great energy and complaints about crowding or slow bar service. 4.4 rating from 334 reviews.']]},
+      {c:'dancing',n:'Antro Juan',h:'Roma Norte',a:'Av. Álvaro Obregón 287',s:[],d:'Energetic, irreverent Roma nightclub with reggaeton, house, world music, live sets, and a young crowd.',f:[['💰','Moderate. Cover around MXN 300. Presale tiers can run MXN 100 to 250. Cashless payments accepted.'],['🍸','Mezcal, cocktails, beer, and shots.'],['⏰','Thu to Fri 10 PM to 5 AM, Sat 11:30 PM to 5 AM.']]},
+
+      {c:'cafes',n:'Panadería Rosetta',h:'Roma Norte',a:'Calle Colima 179',s:['planned'],d:'Elena Reygadas’ legendary bakery with Paris-caliber croissants, the iconic guava roll, and savory brunch options.',f:[['💰','Expensive for a bakery, but worth it.'],['🥐','Order the guayaba roll, cardamom bun, blueberry focaccia, or ciabatta with burrata. Coffee, sandwiches, and full breakfast are available.'],['⏳','Weekend waits can exceed an hour. Go weekday morning or early afternoon.'],['⏰','Mon to Tue 7 AM to 9 PM, Wed to Sat 7 AM to 10 PM, Sun 7:30 AM to 9:30 PM. Second branch at Puebla 242.'],['🏆','4.6 rating from 227 reviews.']]}
+    ];
+
+    const neighborhoodAliases = {
+      'Juárez / Zona Rosa': ['Juárez', 'Zona Rosa'],
+      'Reforma / Cuauhtémoc': ['Reforma', 'Cuauhtémoc'],
+      'Condesa edge': ['Condesa'],
+      'Hipódromo / Condesa': ['Hipódromo', 'Condesa'],
+      'Juárez / Roma edge': ['Juárez'],
+      'Roma Sur / Roma Norte': ['Roma Sur', 'Roma Norte']
+    };
+
+    function neighborhoodsFor(venue) {
+      return neighborhoodAliases[venue.h] || [venue.h];
+    }
+
+    const neighborhoods = [...new Set(venues.flatMap(neighborhoodsFor))]
+      .sort((a, b) => a.localeCompare(b, 'es'));
+
+    const statusLabels = {
+      planned: ['✓ On Itinerary', 'status-planned'],
+      must: ['★ Must Do', 'status-must'],
+      watch: ['⚠ Verify First', 'status-watch']
+    };
+
+    function esc(value) {
+      return String(value).replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+    }
+
+    function mapsUrl(v) {
+      const query = [v.n, v.a, 'Ciudad de México', 'Mexico'].filter(Boolean).join(', ');
+      return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+    }
+
+    function cardHtml(v, cat) {
+      const href = mapsUrl(v);
+      const tags = [
+        `<span class="tag ${cat.tagClass}">${esc(cat.tag)}</span>`,
+        `<span class="tag tag-hood">${esc(v.h)}</span>`,
+        ...v.s.map(s => `<span class="status ${statusLabels[s][1]}">${statusLabels[s][0]}</span>`)
+      ].join('');
+      const facts = [["📍", v.a], ...v.f].map(([icon,text]) => `<li class="fact"><span class="fact-icon" aria-hidden="true">${icon}</span><span>${esc(text)}</span></li>`).join('');
+      return `<article class="venue-card reveal" data-category="${v.c}" data-neighborhoods="${esc(neighborhoodsFor(v).join('|'))}" data-search="${esc((v.n+' '+v.h+' '+v.d+' '+v.f.flat().join(' ')).toLowerCase())}">
+        <div class="card-top"><h3 class="venue-name"><a class="venue-link" href="${href}" target="_blank" rel="noopener">${esc(v.n)}</a></h3><a class="map-arrow" href="${href}" target="_blank" rel="noopener" aria-label="Open ${esc(v.n)} in Google Maps">↗</a></div>
+        <div class="tags">${tags}</div>
+        <p class="venue-desc">${esc(v.d)}</p>
+        <ul class="fact-list">${facts}</ul>
+        ${v.r ? `<div class="reservation">📅 ${esc(v.r)}</div>` : ''}
+      </article>`;
+    }
+
+    const vault = document.getElementById('vault');
+    vault.innerHTML = categories.map(cat => {
+      const items = venues.filter(v => v.c === cat.id);
+      const extras = cat.id === 'tacos' ? `<div class="saved-notes reveal">
+        <h3>Saved food notes</h3>
+        <p>Original comparison tables kept here for quick reference. One Centro lead remains unidentified, so it is not listed as a venue.</p>
+        <div class="note-images">
+          <figure><img src="img/v-img02.jpg" alt="Saved table comparing El Vilsito, Los Callejeros, Taquería El Califa, and an unidentified Centro taco lead" loading="lazy"><figcaption>Classic and Centro taco shortlist</figcaption></figure>
+          <figure><img src="img/v-img03.jpg" alt="Saved table comparing five vegan taco shops by style, specialty, tortilla, and price" loading="lazy"><figcaption>Vegan taco shortlist</figcaption></figure>
+        </div>
+        <div class="lead-note"><strong>Open lead:</strong> A fresh-tortilla taco spot in Centro, under MXN 100 and good for a quick daytime bite. The screenshot did not identify the venue, so the Vault does not guess.</div>
+      </div>` : '';
+      return `<section class="category" id="${cat.id}" data-category-section="${cat.id}">
+        <div class="section-head">
+          <div class="section-emoji" aria-hidden="true">${cat.emoji}</div>
+          <div><div class="section-title-row"><h2>${cat.title}</h2><span class="section-count">${items.length} ${items.length === 1 ? 'spot' : 'spots'}</span></div><p>${cat.blurb}</p></div>
+        </div>
+        <div class="venue-grid">${items.map(v => cardHtml(v, cat)).join('')}</div>${extras}
+      </section>`;
+    }).join('');
+
+    const filters = document.getElementById('filters');
+    filters.innerHTML = `<button class="filter-pill" type="button" data-filter="all" aria-pressed="true">All 41</button>` + categories.map(cat => {
+      const count = venues.filter(v => v.c === cat.id).length;
+      return `<button class="filter-pill" type="button" data-filter="${cat.id}" aria-pressed="false">${cat.emoji} ${cat.label} ${count}</button>`;
+    }).join('');
+
+    const neighborhoodSelect = document.getElementById('neighborhood-select');
+    neighborhoodSelect.insertAdjacentHTML('beforeend', neighborhoods.map(neighborhood =>
+      `<option value="${esc(neighborhood)}">${esc(neighborhood)}</option>`
+    ).join(''));
+
+    const search = document.getElementById('venue-search');
+    const clear = document.querySelector('.clear-search');
+    const resultCount = document.getElementById('result-count');
+    const activeLabel = document.getElementById('active-label');
+    const empty = document.getElementById('empty-state');
+    let activeCategory = 'all';
+    let activeNeighborhood = 'all';
+
+    function applyFilters(options = {}) {
+      const query = search.value.trim().toLowerCase();
+      let visible = 0;
+      document.querySelectorAll('.category').forEach(section => {
+        const catMatch = activeCategory === 'all' || section.dataset.categorySection === activeCategory;
+        let sectionVisible = 0;
+        section.querySelectorAll('.venue-card').forEach(card => {
+          const cardNeighborhoods = card.dataset.neighborhoods.split('|');
+          const neighborhoodMatch = activeNeighborhood === 'all' || cardNeighborhoods.includes(activeNeighborhood);
+          const match = catMatch && neighborhoodMatch && (!query || card.dataset.search.includes(query));
+          card.classList.toggle('is-hidden', !match);
+          if (match) { sectionVisible++; visible++; }
+        });
+        section.hidden = !catMatch || sectionVisible === 0;
+      });
+      resultCount.textContent = visible;
+      resultCount.nextSibling.textContent = visible === 1 ? ' place ready' : ' places ready';
+      const cat = categories.find(c => c.id === activeCategory);
+      const labels = [];
+      if (cat) labels.push(cat.title);
+      if (activeNeighborhood !== 'all') labels.push(activeNeighborhood);
+      if (query) labels.push(`“${search.value.trim()}”`);
+      activeLabel.textContent = labels.length ? labels.join(' · ') : 'All categories and neighborhoods';
+      clear.style.display = query ? 'block' : 'none';
+      empty.style.display = visible ? 'none' : 'block';
+      if (options.scroll && visible) {
+        const target = activeCategory === 'all' ? document.querySelector('.result-line') : document.getElementById(activeCategory);
+        target.scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'});
+      }
+    }
+
+    filters.addEventListener('click', event => {
+      const button = event.target.closest('[data-filter]');
+      if (!button) return;
+      activeCategory = button.dataset.filter;
+      filters.querySelectorAll('.filter-pill').forEach(pill => pill.setAttribute('aria-pressed', String(pill === button)));
+      applyFilters({scroll:true});
+    });
+    neighborhoodSelect.addEventListener('change', () => {
+      activeNeighborhood = neighborhoodSelect.value;
+      applyFilters({scroll:true});
+    });
+    search.addEventListener('input', () => applyFilters());
+    clear.addEventListener('click', () => { search.value = ''; search.focus(); applyFilters(); });
+    document.getElementById('reset-search').addEventListener('click', () => {
+      activeCategory = 'all'; activeNeighborhood = 'all'; search.value = ''; neighborhoodSelect.value = 'all';
+      filters.querySelectorAll('.filter-pill').forEach(pill => pill.setAttribute('aria-pressed', String(pill.dataset.filter === 'all')));
+      applyFilters({scroll:true});
+    });
+    applyFilters();
+
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.08, rootMargin:'0px 0px -5% 0px'});
+    document.querySelectorAll('.reveal').forEach((el, index) => {
+      el.style.transitionDelay = `${(index % 4) * 45}ms`;
+      revealObserver.observe(el);
+    });
+  </script>
+</body>
+</html>
