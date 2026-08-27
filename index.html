@@ -151,6 +151,34 @@
       color:var(--text-light);
       margin-top:0.15rem;
     }
+    .vault-entry{
+      display:flex;
+      justify-content:center;
+      padding:1.1rem 1.5rem 1.25rem;
+      background:#fff;
+    }
+    .vault-link{
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+      min-height:40px;
+      padding:0.58rem 1rem;
+      border:1px solid rgba(191,78,48,0.34);
+      border-radius:999px;
+      background:var(--terracotta);
+      color:#fff;
+      font-family:var(--sans);
+      font-size:0.76rem;
+      font-weight:700;
+      letter-spacing:0.02em;
+      line-height:1;
+      text-decoration:none;
+      box-shadow:0 4px 12px rgba(191,78,48,0.16);
+      transition:background-color 0.2s ease,border-color 0.2s ease,box-shadow 0.2s ease;
+    }
+    .vault-link svg{width:15px;height:15px;stroke:currentColor;stroke-width:1.8;fill:none}
+    .vault-link:hover{background:#A94128;border-color:#A94128;box-shadow:0 5px 15px rgba(191,78,48,0.22)}
+    .vault-link:focus-visible{outline:2px solid var(--warm-gold);outline-offset:3px}
 
     /* ── BASE / AIRBNB ── */
     .base-strip{
@@ -570,6 +598,13 @@
     <div class="stat-num">8</div>
     <div class="stat-label">Barrios</div>
   </div>
+</div>
+
+<div class="vault-entry">
+  <a class="vault-link" href="vault.html">
+    CDMX Vault: 41 More Spots
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </a>
 </div>
 
 <!-- ═══════ BASE ═══════ -->
